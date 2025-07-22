@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <!-- jquery file for ajax -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        .form-section {
+            margin: auto;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            width: 1000px;
+           background-color: white;
+        }
+
+        body {
+            background-image: url(./pics/Blue\ watercolor\ sky\ and\ clouds_\ Light\ vector\ background.jpeg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $("#publishData-btn").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/Publish-data",
+                    data: {
+                        txtEmail1: $("#txtEmail1").val(),
+                        txtEvent: $("#txtEvent").val(),
+                        txtDate: $("#txtDate").val(),
+                        txtTime: $("#txtTime").val(),
+                        txtLoc: $("#txtLoc").val(),
+                        txtCity1: $("#txtCity1").val(),
+                        comboSports: $("#comboSports").val(),
+                        txtMin: $("#txtMin").val(),
+                        txtMax: $("#txtMax").val(),
+                        txtDateOfReg: $("#txtDateOfReg").val(),
+                        txtFee: $("#txtFee").val(),
+                        txtPrize: $("#txtPrize").val(),
+                        txtContact1: $("#txtContact1").val()
+
+
+                    }
+                }
+                $.ajax(obj).then(
+                    function (response) {
+                        alert((response))
+
+                    }).fail(function (err) { alert(err.message) })
+            })
+
+        })
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("txtEmail1").value = activeUser;
+        }
+    </script>
+
+</head>
+
+<body onload="showUser();">
+
+    <div class="container mt-4">
+        <center>
+            <h4 class="mb-3" style="font-weight: bold; font-size: 1.5rem;"><i class="fas fa-clipboard-list"></i> Tournament Entry Form </h4>
+        </center>
+        <div class="form-section">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" id="hdn" name="hdn">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="emailid" class="form-label"><i class="fas fa-envelope"></i> Email ID</label>
+                        <input type="email" class="form-control" id="txtEmail1" name="txtEmail1">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="eventt" class="form-label"><i class="fas fa-flag"></i> Event Title</label>
+                        <input type="text" class="form-control" id="txtEvent" name="txtEvent"
+                            placeholder="Enter tournament name">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="doe date" class="form-label"><i class="fas fa-calendar-alt"></i> Date</label>
+                        <input type="date" class="form-control" id="txtDate" name="txtDate" placeholder="dd-mm-yyyy">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="toe time" class="form-label"><i class="fas 	fa-clock"></i> Time</label>
+                        <input type="time" class="form-control" id="txtTime" name="txtTime">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="address" class="form-label"><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" class="form-control" id="txtLoc" name="txtLoc" placeholder="Venue">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="city" class="form-label"><i class="fas fa-city"></i> City</label>
+                        <input type="text" class="form-control" id="txtCity1" name="txtCity1"
+                            placeholder="Enter city name">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="sportss"><i class="fas fa-dumbbell"></i> Sports Category</label>
+                        <select id="comboSports" name="comboSports" class="form-select">
+                            <option value="">-- Select Sport --</option>
+                            <option value="Football">Football</option>
+                            <option value="Cricket">Cricket</option>
+                            <option value="Basketball">Basketball</option>
+                            <option value="Tennis">Tennis</option>
+                            <option value="Badminton">Badminton</option>
+                            <option value="Volleyball">Volleyball</option>
+                            <option value="Table Tennis">Table Tennis</option>
+                            <option value="Athletics">Athletics</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Hockey">Hockey</option>
+                            <option value="Baseball">Baseball</option>
+                            <option value="Rugby">Rugby</option>
+                            <option value="Golf">Golf</option>
+                            <option value="Boxing">Boxing</option>
+                            <option value="Martial Arts">Martial Arts</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="minage" class="form-label"><i class="fas fa-user"></i> Min Age</label>
+                        <input type="number" class="form-control" id="txtMin" name="txtMin"
+                            placeholder="Minimum age to participate">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="maxage" class="form-label"><i class="fas fa-user"></i> Max Age</label>
+                        <input type="number" class="form-control" id="txtMax" name="txtMax"
+                            placeholder="Maximum eligible age">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="lastdate" class="form-label"><i class="fas fa-calendar-check"></i> Last Date Of
+                            Registration</label>
+                        <input type="date" class="form-control" id="txtDateOfReg" name="txtDateOfReg"
+                            placeholder="dd-mm-yyyy">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="fee" class="form-label"><i class="fas fa-rupee-sign"></i> Entry Fee</label>
+                        <input type="text" class="form-control" id="txtFee" name="txtFee"
+                            placeholder="Enter the entry fee of Event">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="prize" class="form-label"><i class="fas fa-medal"></i> Prize Money</label>
+                        <input type="text" class="form-control" id="txtPrize" name="txtPrize"
+                            placeholder="Enter Prize Money">
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="contact" class="form-label"><i class="fas fa-phone"></i> Contact Number</label>
+                        <input type="text" class="form-control" id="txtContact1" name="txtContact1"
+                            placeholder="10-digit mobile number">
+                    </div>
+                </div>
+
+
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" id="publishData-btn" class="btn btn-info me-2" formaction="/Publish-data"><i
+                            class="fas fa-check-circle"></i> Publish Event</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

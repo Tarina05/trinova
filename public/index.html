@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+        </script>
+
+
+    <!-- validations design -->
+    <style>
+        .not-ok-pic {
+            width: 20px;
+            height: 20px;
+            background-image: url(pics/notok.png);
+            background-size: contain;
+        }
+
+        .not-ok {
+            color: white;
+            padding: 1px;
+            background-color: red;
+            border-radius: 2px;
+        }
+
+        .ok-pic {
+            width: 20px;
+            height: 20px;
+            background-image: url(pics/ok.png);
+            background-size: contain;
+        }
+
+        .ok {
+            color: green;
+            padding: 1px;
+            background-color: grey;
+            border-radius: 2px;
+        }
+
+        .modal-header {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+    </style>
+
+
+    <!-- sign up button -->
+    <script>
+        $(document).ready(function () {
+            $("#signUpBtn").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/sign-up",
+                    data: {
+                        txtEmail: $("#txtEmail").val(),
+                        txtPwd: $("#txtPwd").val(),
+                        comboUser: $("#comboUser").val()
+                    }
+                }
+                $.ajax(obj).then(
+                    function (response) {
+                        alert((response))
+
+                    }).fail(function (err) { alert(err.message) })
+            })
+
+            $("#loginBtn").click(function () {
+                let email = $("#txtEmail2").val();
+                let pwd = $("#txtPwd2").val();
+                let obj = {
+                    type: "get",
+                    url: "/chk-login",
+                    data: {
+                        txtEmail2: email,
+                        txtPwd2: pwd
+                    }
+                }
+                $.ajax(obj).then(function (response) {
+
+                    if (response == "Blocked")
+                        alert("Sorry, your ID is blocked in the professional system.");
+                    else if (response == "Invalid")
+                        alert("Invalid credentials. Please try again.");
+                    else
+                        if (response == "Player") {
+                            localStorage.setItem("activeUser", email);
+                            location.href = "dash-player.html";
+                        }
+                        else if (response == "Organizer") {
+                            localStorage.setItem("activeUser", email);
+                            location.href = "dash-organizer.html";
+                        }
+                        else if (response == "Admin") {
+                            localStorage.setItem("activeUser", email);
+                            location.href = "dash-admin.html";
+                        }
+
+                }).fail(function (err) {
+                    alert(JSON.stringify(err));
+                })
+            })
+
+
+        })
+    </script>
+
+    <!-- validations -->
+    <script>
+        $(document).ready(function () {
+            $("#txtEmail").keyup(function () {
+                let email = $(this).val();
+                let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+                if (email == "") {
+                    $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
+
+                    $(this).focus();
+                }
+
+                else if (regex.test(email) == false) {
+                    $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgE").html("Invalid EmailId").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                }
+
+                else {
+                    $("#errPicE").addClass("ok-pic").removeClass("not-ok-pic");
+                    $("#errMsgE").html("Valid EmailId").addClass("ok").removeClass("not-ok");
+                    $(this).focus();
+                }
+
+            })
+
+
+            $("#txtPwd").keyup(function () {
+                let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+                let pwd = $(this).val();
+                if (regex.test(pwd) == true) {
+                    $("#errPicP").addClass("ok-pic").removeClass("not-ok-pic");
+                    $("#errMsgP").html("Strong Password").addClass("ok").removeClass("not-ok");
+                }
+                else {
+                    $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgP").html("Password must be strong").addClass("not-ok").removeClass("ok");
+                }
+
+            })
+
+            $("#eye").click(function () {
+                let txt = $("#txtPwd").prop("type");
+                if (txt == "password") {
+                    $("#txtPwd").prop("type", "text");
+                    $("#eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+                else {
+                    $("#txtPwd").prop("type", "password");
+                    $("#eye").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            })
+
+            /*login password validation */
+            $("#eye1").click(function () {
+                let txt1 = $("#txtPwd2").prop("type");
+                if (txt1 == "password") {
+                    $("#txtPwd2").prop("type", "text");
+                    $("#eye1").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+                else {
+                    $("#txtPwd2").prop("type", "password");
+                    $("#eye1").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            })
+
+        })
+
+    </script>
+
+    <style>
+        .modal-img {
+            max-width: 120px;
+            /* Adjust this value as per your design */
+            height: auto;
+        }
+
+        .bg-modal-image {
+            background-image: url('./pics/Fondo\ Abstracto\ Acuarela\ Azul\ Transparente\ de\ Pantalla\ Imagen\ para\ Descarga\ Gratuita\ -\ Pngtree.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        body {
+            background-image: url(./pics/Blue\ watercolor\ sky\ and\ clouds_\ Light\ vector\ background.jpeg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .carousel-img {
+            height: 500px;
+            border-radius: 20px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+    <nav class="navbar bg-info">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center text-black" href="#">
+                <img src="pics/Premium Vector _ Trophy and Gold Medal   cartoon Illustration_ Winning award champion gold trophy.jpeg"
+                    alt="Logo" width="30" height="30" class="me-2 rounded-circle logo-img">
+                <strong class="mb-0" style="font-size: 1.25rem;">Trinova</strong>
+            </a>
+
+            <div>
+                <button type="button" class="btn btn-dark btn-sm me-3" data-bs-toggle="modal"
+                    data-bs-target="#signupModal"> <i class="fas fa-user-plus me-2"></i> Sign Up</button>
+                <button type="button" class="btn btn-dark btn-sm me-3" data-bs-toggle="modal"
+                    data-bs-target="#loginModal"> <i class="fas fa-sign-in-alt me-2"></i> Login</button>
+                <a href="#getInTouch" class="btn btn-dark btn-sm me-5">
+                    <i class="fas fa-location-arrow me-2"></i> Reach Us
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row align-items-center">
+
+            <div class="col-md-6" style="padding-right: 30px;">
+                <h2 style="font-weight: 700; font-size: 2.5rem; color: #2c3e50;">
+                    Welcome to <span style="color: #0dcaf0">Trinova</span>
+                </h2>
+                <p style="font-weight: 500; font-size: 1.2rem; margin-top: -10px; color: #333;">
+                    Uniting Players, Organizers, and Victory
+                </p>
+
+                <p style="font-style: italic; color: #555; font-size: 1.1rem; margin-top: 10px;">
+                    “Success isn’t always about greatness. It’s about consistency. Consistent hard work leads to
+                    success.”
+                </p>
+                <p style="color: #6c757d; font-size: 0.9rem;">— Dwayne “The Rock” Johnson</p>
+
+                <p style="margin-top: 25px; color: #34495e; font-size: 1.05rem; line-height: 1.6;">
+                    Discover tournaments. Meet passionate organizers.
+                    Track sporting events across your city and all over India — all in one place.
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <img src="pics/Olympic games sports background with copy space for text _ Premium AI-generated image.jpeg"
+                    alt="Sports" class="img-fluid" style="width: 100%; height: 300px; object-fit: cover;">
+            </div>
+
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- Our Services Heading -->
+    <div class="text-center mt-5 mb-4">
+        <h2 class="fw-bold" style="color: #2c3e50;">Our Services</h2>
+        <p class="text-muted">Everything you need to organize and explore sports tournaments</p>
+    </div>
+
+    <!-- Carousel for Services -->
+    <div id="servicesCarousel" class="carousel slide container" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+            <!-- Service 1 -->
+            <div class="carousel-item active text-center p-4">
+                <img src="pics/download (8).jpeg" class="d-block w-100 carousel-img" alt="Organize">
+                <br>
+                <h4 class="fw-semibold text-dark">Organize Tournaments with Ease</h4>
+                <p class="text-muted">Organizers can register, post, and manage sports tournaments from one dashboard.
+                </p>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="carousel-item text-center p-4">
+                <img src="pics/Tessa.jpeg" class="d-block w-100 carousel-img" alt="Track Events">
+                <br>
+                <h4 class="fw-semibold text-dark">Track All Your Events</h4>
+                <p class="text-muted">View and manage all tournaments posted by your organization in real-time.</p>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="carousel-item text-center p-4">
+                <img src="pics/Business target achievement concept The young businessman is happy that the business is as successful as an arrow that shoots accurately into the center of the target Vector illustration _ Free Vector.jpeg"
+                    class="d-block w-100 carousel-img" alt="Player Profile">
+                <br>
+                <h4 class="fw-semibold text-dark">Player Profile & Participation</h4>
+                <p class="text-muted">Build your player profile and view your tournament participation history.</p>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="carousel-item text-center p-4">
+                <img src="pics/Player Photos - Download Free High-Quality Pictures _ Freepik.jpeg"
+                    class="d-block w-100 carousel-img" alt="Explore Events">
+                <br>
+                <h4 class="fw-semibold text-dark">Explore & Join Sports Events</h4>
+                <p class="text-muted">Find tournaments near you by sport and city. Get all the details and register
+                    easily.</p>
+            </div>
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#servicesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#servicesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+        </button>
+    </div>
+
+    <div class="row align-items-center">
+        <div class="col-md-5 text-center">
+            <img src="pics/Download UEFA Champion Celebration Design for free.jpeg" alt="Our Mission"
+                class="img-fluid rounded-circle shadow" style="max-width: 300px;">
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold" style="color: #2c3e50">Our Mission</h2>
+            <br>
+            <p class="fs-5" style="color: #333;">
+                At <strong style="color: #00CFE8;">Trinova</strong>, our mission is to empower sports enthusiasts,
+                athletes, and organizers across India by creating a vibrant and connected platform.
+                We strive to make every sporting dream reachable — by bridging passion with opportunity.
+            </p>
+            <p class="fs-6" style="color: #555;">
+                Through innovation, inclusivity, and integrity, we aim to build a community where
+                tournaments thrive, talents shine, and excellence is celebrated.
+                <span class="fw-semibold" style="color: #00CFE8;">Because success begins with participation.</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- meet the developers -->
+
+    <div class="container my-3 p-3"
+        style="border: 3px solid #00CFE8; border-radius: 10px; background-color: white; width: 100%;">
+        <h2 class="text-center fw-bold mb-3" style="color: #00CFE8;">Behind the Vision</h2>
+
+        <!-- Mentor -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-4 text-center">
+                <img src="pics/sir.jpg" alt="Mr. Rajesh Bansal" class="img-fluid rounded-circle shadow"
+                    style="width: 300px; height: 250px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <h4 style="color: red">Under the Guidance Of</h4>
+                <h4 class="fw-bold" style="color: #333;">Mr. Rajesh Bansal</h4>
+                <p style="color: #666; margin-bottom: 6px;">
+                    A guiding force and an inspirational mentor behind this project. With his vast experience, unmatched
+                    wisdom, and constant encouragement, this initiative found both direction and purpose.
+                </p>
+                <p class="text-muted small fst-italic" style="margin-bottom: 0;">“A teacher's guidance turns effort into
+                    excellence.”</p>
+            </div>
+        </div>
+
+        <!-- Developer -->
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center">
+                <img src="pics/WhatsApp Image 2025-07-21 at 5.09.44 PM.jpeg" alt="Developer Photo"
+                    class="img-fluid rounded-circle shadow" style="width: 300px; height: 250px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <h4 style="color: red;">Developed By</h4>
+                <h4 class="fw-bold" style="color: #333;">Tarina Jethi</h4>
+                <p style="color: #666; margin-bottom: 6px;">
+                    A passionate and dedicated B.Tech (CSE) student entering the final year at <strong>Punjabi
+                        University, Patiala</strong>.
+                    I have hands-on experience in both frontend and backend development, with a strong command over
+                    <strong>Node.js</strong> and <strong>AngularJS</strong>. Previously, I also developed a full-stack
+                    project using <strong>JavaFX</strong>,
+                    which deepened my understanding of desktop-based application development.
+                </p>
+                <p class="mb-0"><strong>#Email:</strong> tarinajethi615@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reach Us Section -->
+    <div class="container mt-5 mb-5">
+        <div class="row align-items-center">
+
+            <div class="col-md-4 text-md-start text-center mb-4 mb-md-0">
+                <h3 class="fw-bold mb-4 ms-5" style="color: #222;" id="getInTouch">Get in Touch</h3>
+
+                <div class="mb-3">
+                    <i class="fas fa-envelope fa-lg text-danger me-2"></i>
+                    <span class="fw-semibold" style="color: #444;">www.tarinajethi615.com</span>
+                </div>
+
+                <div class="mb-3">
+                    <i class="fab fa-linkedin fa-lg text-danger me-2"></i>
+                    <a href="https://www.linkedin.com/in/tarinajethi/" target="_blank"
+                        class="fw-semibold text-decoration-none" style="color: #444;">
+                        Visit My LinkedIn
+                    </a>
+                </div>
+
+                <div class="mb-3">
+                    <i class="fas fa-clock fa-lg text-danger me-2"></i>
+                    <span class="fw-semibold" style="color: #444;">Mon – Fri, 10am – 6pm</span>
+                </div>
+            </div>
+
+            <div class="col-md-8 d-flex justify-content-center">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3442.7212103239344!2d76.4470848753577!3d30.358872174766823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39102804bba6d66b%3A0x8f2ada618e274451!2sPunjabi%20University%2C%20Patiala!5e0!3m2!1sen!2sin!4v1753100595023!5m2!1sen!2sin"
+                    width="100%" height="250" style="border: 1px solid #ccc; border-radius: 12px;" allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="container text-center mt-5">
+
+        <!-- Signup button and Modal -->
+        <div class=" modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-modal-image">
+                    <div class="modal-header bg-info">
+                        <h1 class="modal-title fs-5 text-center w-100 text-black " id="signupModalLabel">SignUp </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="text-center mb-3">
+                            <img src="pics/Contacts icon blue.jpeg" class="rounded-circle img-fluid modal-img"
+                                alt="Contact Icon">
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="txtEmail" name="txtEmail"
+                                placeholder="name@example.com">
+                            <label for="txtEmail">Email address</label>
+                            <div style="display: flex;">
+                                <div style="margin-right: 10px;" id="errPicE"></div>
+                                <div id="errMsgE"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-floating mb-3 ">
+                            <input type="password" class="form-control" id="txtPwd" name="txtPwd"
+                                placeholder="Password">
+                            <label for="txtPwd">Password</label>
+                            <i class="fa-solid fa-eye " id="eye"
+                                style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                            <div style="display: flex;">
+                                <div style="margin-right: 10px;" id="errPicP"></div>
+                                <div id="errMsgP"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="comboUser" name="comboUser"
+                                aria-label="Floating label select example">
+                                <option selected>Open this menu</option>
+                                <option value="Organizer">Organizer</option>
+                                <option value="Player">Player</option>
+                            </select>
+                            <label for="comboUser">User Type</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" id="signUpBtn" class="btn btn-info ms-2">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login modal and button -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-modal-image">
+                    <div class="modal-header bg-info">
+                        <h1 class="modal-title fs-5 text-center w-100 text-black" id="loginModalLabel">Login</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="txtEmail2" name="txtEmail2"
+                                placeholder="name@example.com">
+                            <label for="txtEmail2">Email address</label>
+
+                        </div>
+
+
+                        <div class="form-floating mb-3 ">
+                            <input type="password" class="form-control" id="txtPwd2" name="txtPwd2"
+                                placeholder="Password">
+                            <label for="txtPwd2">Password</label>
+                            <i class="fa-solid fa-eye fa-bounce" id="eye1"
+                                style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" id="loginBtn" class="btn btn-info ms-2">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

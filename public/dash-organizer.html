@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        body {
+             background-image: url(./pics/Blue\ watercolor\ sky\ and\ clouds_\ Light\ vector\ background.jpeg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .photo {
+            width: 260px;
+            height: 200px;
+            margin: 20px auto 10px auto;
+
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px gray;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .card-body {
+            margin: auto;
+        }
+
+        .container {
+            position: absolute;
+            top: 200px;
+            left: 20px;
+
+        }
+
+        .logo-img {
+            object-fit: cover;
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("welcome").innerHTML = activeUser;
+        }
+
+        function doLogout() {
+            localStorage.removeItem("activeUser");
+            location.href = "index.html";
+        }
+    </script>
+</head>
+
+
+<body style=" background-color: #E0F7FA;" onload="showUser();">
+
+    <nav class="navbar bg-info">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center text-black" href="#">
+                <img src="pics/Premium Vector _ Trophy and Gold Medal   cartoon Illustration_ Winning award champion gold trophy.jpeg"
+                    alt="Logo" width="40" height="40" class="me-2 rounded-circle logo-img">
+                <strong>Trinova </strong>
+            </a>
+
+            <div class="me-5 bg-info text-black"> <b>Welcome : </b> <span id="welcome"></span> </div>
+        </div>
+    </nav>
+
+    <h4 class="mb-3"
+        style="text-align: center; margin-top: 50px; font-size: 32px; font-weight: bold; font-family: 'Poppins', sans-serif;">
+        <i class="fa-solid fa-user-tie me-2"></i> ORGANIZER'S DASHBOARD
+    </h4>
+
+    <div class="container">
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px; ">
+                    <img src="pics/download (5).jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Organization details </b> </h5>
+                        <p class="card-text">Enter your official details,post certificates and register yourself to get
+                            started</p>
+                        <a href="org-details.html" target="_blank" class="btn btn-info"><i
+                                class="fas fa-info-circle me-1"></i> Organization Details </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/DEFINITION.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Enlist new Event</b> </h5>
+                        <p class="card-text">Share your upcoming sports events with the community.Add details like
+                            date,venue and prize.</p>
+                        <a href="post-tournaments.html" target="_blank" class="btn btn-info"><i
+                                class="fas fa-plus-circle me-1"></i> Enlist an Event </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/A Vector Illustration Of Athletes In Different Sports Poster Background, Drawing, Cartoon, Element Background Image And Wallpaper for Free Download.jpeg"
+                        class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <b>Manage Tournaments</b></h5>
+                        <p class="card-text">Update tournament information,check registrations and manage your
+                            tournaments all in one place.</p>
+                        <a href="tournamentsManager.html" target="_blank" class="btn btn-info"><i
+                                class="fas fa-list-check"></i> Manage Events </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/cheen tapak dam dam.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <b>Logout</b></h5>
+                        <p class="card-text">Safely sign out of your organizer account,end your session & return to the
+                            homepage.</p>
+                        <a href="#" target="_blank" class="btn btn-info" onclick="doLogout();"><i
+                                class="fas fa-door-open me-1"></i> Logout </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        body {
+            background-color: #FDF6EE;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .photo {
+            width: 260px;
+            height: 200px;
+            margin: 20px auto 10px auto;
+
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px gray;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .card-body {
+            margin: auto;
+        }
+
+        .container {
+            position: absolute;
+            top: 200px;
+            left: 20px;
+
+        }
+
+        body {
+            background-image: url(./pics/Blue\ watercolor\ sky\ and\ clouds_\ Light\ vector\ background.jpeg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+
+    <script>
+        function doLogout() {
+            localStorage.removeItem("activeUser");
+            location.href = "index.html";
+        }
+    </script>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar bg-info">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center text-black" href="#">
+                <img src="pics/Premium Vector _ Trophy and Gold Medal   cartoon Illustration_ Winning award champion gold trophy.jpeg"
+                    alt="Logo" width="40" height="40" class="me-2 rounded-circle logo-img">
+                <strong>Trinova </strong>
+            </a>
+        </div>
+    </nav>
+
+    <h4 class="mb-3"
+        style="text-align: center; margin-top: 50px; font-size: 32px; font-weight: bold; font-family: 'Poppins', sans-serif;">
+        <i class="fas fa-user-shield"></i> ADMIN'S DASHBOARD
+    </h4>
+
+    <div class="container">
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px; ">
+                    <img src="pics/Nguồn gốc tiếng Việt và lịch sử phát triển của tiếng Việt.jpeg" class="photo"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><b> User's Console </b> </h5>
+                        <p class="card-text">Manage user details, verify registrations, and monitor user activity across the platform.</p>
+                        <a href="admin-users-console.html" target="_blank" class="btn btn-info"><i class="fa-solid fa-user-gear"></i> View Console </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/Talent development, career growth, training or coaching staff develop skill, employee improvement, HR human resources concept, businessman manager watering growth talented staff in grow seedling pot_.jpeg"
+                        class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><b> Organizer Information</b> </h5>
+                         <p class="card-text">Maintain organizer records, update event details, and verify credentials in one place.</p>
+                        <a href="organizerManager.html" target="_blank" class="btn btn-info"><i class="fa-solid fa-clipboard-list"></i> Organizers Record </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/Business Woman see reflection from mirror she get award and victory from win work herself successful_ vector concept.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <b>Player Information</b></h5>
+                         <p class="card-text">Review player data, history, and track their participation and eligibility and verify credentials.</p>
+                        <a href="playerManager.html" target="_blank" class="btn btn-info"> <i class="fa-solid fa-users"></i>  Players Record</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/cheen tapak dam dam.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <b>Logout</b></h5>
+                        <p class="card-text">Click to securely end your session and return to the login or home screen.</p>
+                        <a href="#" target="_blank" class="btn btn-info" onclick="doLogout();"> <i class="fa-solid fa-right-from-bracket"></i>Logout </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+
+
+
+</html>

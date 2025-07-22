@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <!-- jquery file for ajax -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+
+         body {
+            background-image: url(./pics/Blue\ watercolor\ sky\ and\ clouds_\ Light\ vector\ background.jpeg);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .form-section {
+            margin: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            width: 1000px;
+        }
+
+        .btn-search {
+            margin-top: 31px;
+        }
+
+        .preview-img {
+            width: 80px;
+            height: 100px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+
+    <script>
+        function showPrev(fileRef, prevRef) {
+            const [file] = fileRef.files
+            if (file) {
+                prevRef.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+    <!-- search with ajax -->
+    <script>
+        $(document).ready(function () {
+            $("#btnBrowse").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/get-player",
+                    data: {
+                        txtEmail: $("#txtEmail").val()
+                    }
+                }
+                $.ajax(obj).then(
+                    function (responseJsonAry) {
+
+                        let acardpicurl = responseJsonAry[0].acardpicurl;
+                        let profilepicurl = responseJsonAry[0].profilepicurl;
+                        let name = responseJsonAry[0].name;
+                        let dob = responseJsonAry[0].dob;
+                        let gender = responseJsonAry[0].gender;
+                        let address = responseJsonAry[0].address;
+                        let contact = responseJsonAry[0].contact;
+                        let game = responseJsonAry[0].game;
+                        let otherinfo = responseJsonAry[0].otherinfo;
+
+                        $("#prevAdhar").prop("src", acardpicurl);
+                        $("#prev").prop("src", profilepicurl);
+                        $("#txtName").val(name);
+                        if (dob) {
+                            let datePart = dob.substring(0, 10); // "2000-03-12"
+                            $("#txtDob").val(datePart);
+                        } else {
+                            $("#txtDob").val('');
+                        }
+                        $("#txtGen").val(gender);
+                        $("#txtAddress").val(address);
+                        $("#txtContact").val(contact);
+                        $("#comboGames").val(game);
+                        $("#txtOtherInfo").val(otherinfo);
+
+                        $("#hdn").val(acardpicurl);
+                        $("#hdn").val(profilepicurl);
+
+                    }).fail(function (err) { alert(err.message) })
+            })
+
+        })
+    </script>
+
+    <!-- pic reading with ai -->
+    <script>
+
+        async function readAdhar() {
+            let file = document.getElementById('adharPic').files[0];
+            if (!file) return;
+
+            let formData = new FormData();
+            formData.append("adharPic", file);
+
+            try {
+                let res = await fetch("/picreader", { method: "POST", body: formData });
+                let data = await res.json();
+                document.getElementById('txtName').value = data.name;
+                document.getElementById('txtDob').value = formatDateToInput(data.dob);
+                document.getElementById('txtGen').value = data.gender;
+            }
+            catch (err) {
+                alert("Error reading Adhar: " + err.message);
+            }
+
+        }
+
+    </script>
+
+    <script>
+        function formatDateToInput(dob) {
+            // dob: "06/01/2005" or "06-01-2005"
+            let parts = dob.includes('/') ? dob.split('/') : dob.split('-');
+            return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("txtEmail").value = activeUser;
+        }
+    </script>
+
+</head>
+
+<body onload="showUser();">
+    <div class="container mt-4">
+        <center>
+            <h4 class="mb-3" style="font-weight: bold; font-size: 1.5rem;"><i class="fas fa-id-card"></i> Player Panel
+            </h4>
+        </center>
+        <div class="form-section">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" id="hdn" name="hdn">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="txtEmail" class="form-label"><i class="fas fa-envelope me-2"></i> Email ID</label>
+                        <input type="text" class="form-control" id="txtEmail" name="txtEmail" placeholder="Enter your email address">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" id="btnBrowse" class="btn btn-dark w-100"><i class="fas fa-search"></i> Browse data</button>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Upload front of Adhar Card</label>
+                        <input class="form-control" type="file" name="adharPic" id="adharPic"
+                            onchange="showPrev(adharPic, prevAdhar);readAdhar();">
+                        <br>
+                        <img id="prevAdhar" class="preview-img" src="#" alt="">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Profile Pic</label>
+                        <input class="form-control" type="file" name="ProfilePic" id="ProfilePic"
+                            onchange="showPrev(ProfilePic, prev)">
+                        <br>
+                        <img id="prev" class="preview-img" src="#" alt="">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="txtName" class="form-label"><i class="fas fa-user me-2"></i> Name</label>
+                        <input type="text" class="form-control" id="txtName" name="txtName" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="txtDob" class="form-label"><i class="fas fa-calendar-alt me-2"></i> DOB</label>
+                        <input type="date" class="form-control" id="txtDob" name="txtDob" readonly>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="txtGen" class="form-label"><i class="fas fa-venus-mars me-2"></i> Gender</label>
+                        <input type="text" class="form-control" id="txtGen" name="txtGen" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="txtContact" class="form-label"><i class="fas fa-phone me-2"></i>Contact Number</label>
+                        <input type="text" class="form-control" id="txtContact" name="txtContact" placeholder="Enter your mobile number">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="txtAddress" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Address</label>
+                        <input type="text" class="form-control" id="txtAddress" name="txtAddress" placeholder="Your full address">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="comboGames" class="form-label"><i class="fas fa-futbol me-2"></i>Interested Games</label>
+                        <select id="comboGames" name="comboGames" class="form-select">
+                            <option value="">-- Choose --</option>
+                            <option value="Football">Football</option>
+                            <option value="Cricket">Cricket</option>
+                            <option value="Basketball">Basketball</option>
+                            <option value="Tennis">Tennis</option>
+                            <option value="Badminton">Badminton</option>
+                            <option value="Volleyball">Volleyball</option>
+                            <option value="Table Tennis">Table Tennis</option>
+                            <option value="Athletics">Athletics</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Hockey">Hockey</option>
+                            <option value="Baseball">Baseball</option>
+                            <option value="Rugby">Rugby</option>
+                            <option value="Golf">Golf</option>
+                            <option value="Boxing">Boxing</option>
+                            <option value="Martial Arts">Martial Arts</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="txtOtherInfo" class="form-label"><i class="fas fa-info-circle me-2"></i>Other Information</label>
+                        <textarea class="form-control" id="txtOtherInfo" name="txtOtherInfo" rows="3" placeholder="Any other info or achievements"></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-dark me-2" formaction="/Upload-data"><i class="fas fa-upload me-2"></i>Upload Data</button>
+                    <button type="submit" class="btn btn-dark" formaction="/modify1-data"><i class="fas fa-pen-to-square me-2"></i>Modify</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

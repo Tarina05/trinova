@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title></title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script>
+        $(document).ready(function () {
+
+            /*Old Password validation */
+            $("#eye").click(function () {
+                let txt = $("#txtPwd").prop("type");
+                if (txt == "password") {
+                    $("#txtPwd").prop("type", "text");
+                    $("#eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+                else {
+                    $("#txtPwd").prop("type", "password");
+                    $("#eye").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            })
+
+            /*New password validation */
+            $("#eye1").click(function () {
+                let txt1 = $("#txtPwd2").prop("type");
+                if (txt1 == "password") {
+                    $("#txtPwd2").prop("type", "text");
+                    $("#eye1").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+                else {
+                    $("#txtPwd2").prop("type", "password");
+                    $("#eye1").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            })
+        })
+    </script>
+
+    <style>
+        body {
+            background-image: url(./pics/Blue\ watercolor\ sky\ and\ clouds_\ Light\ vector\ background.jpeg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .photo {
+            width: 260px;
+            height: 200px;
+            margin: 20px auto 10px auto;
+
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px gray;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .card-body {
+            margin: auto;
+        }
+
+        .container {
+            position: absolute;
+            top: 200px;
+            left: 20px;
+
+        }
+
+         .bg-modal-image {
+            background-image: url('./pics/Fondo\ Abstracto\ Acuarela\ Azul\ Transparente\ de\ Pantalla\ Imagen\ para\ Descarga\ Gratuita\ -\ Pngtree.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+
+    <!-- Settings Angualr js for updating password -->
+    <script>
+        var module = angular.module("kuchModule", []);
+        module.controller("kuchController", function ($scope, $http) {
+            $scope.doChangePwd = function () {
+                var url = "/do-change-Pwd?email=" + $scope.email + "&oldPwd=" + $scope.oldPwd + "&newPwd=" + $scope.newPwd;
+
+                $http.get(url).then(allGoodFx, someBadFx);
+
+                function allGoodFx(response) {
+                    alert(response.data.message);
+                    $scope.jsonArray = response.data;
+                }
+
+                function someBadFx(response) {
+                    alert("Error: " + JSON.stringify(response.data));
+                }
+            };
+        });
+
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("welcome").innerHTML = activeUser;
+        }
+
+        function doLogout() {
+            localStorage.removeItem("activeUser");
+            location.href = "index.html";
+        }
+    </script>
+
+</head>
+
+<body style="background-color: #FDF6EE;" ng-app="kuchModule" ng-controller="kuchController" onload="showUser();">
+
+    <nav class="navbar bg-info">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center text-black" href="#">
+                <img src="pics/Premium Vector _ Trophy and Gold Medal   cartoon Illustration_ Winning award champion gold trophy.jpeg"
+                    alt="Logo" width="40" height="40" class="me-2 rounded-circle logo-img">
+                <strong>Trinova </strong>
+            </a>
+
+            <div class="me-5 bg-info text-black"> <b>Welcome : </b> <span id="welcome"></span> </div>
+        </div>
+    </nav>
+
+    <h4 class="mb-3"
+        style="text-align: center; margin-top: 50px; font-size: 32px; font-weight: bold; font-family: 'Poppins', sans-serif;">
+        <i class="fas fa-user-circle"></i> PLAYER'S DASHBOARD
+    </h4>
+
+    <div class="container">
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px; ">
+                    <img src="pics/Profile People Apply For Job _ Premium Vector.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><b> My Profile </b> </h5>
+                        <p class="card-text">View and edit your personal details, sports preferences, and achievements.</p>
+                        <a href="profile-player.html" target="_blank" class="btn btn-info"><i class="fas fa-id-badge me-2"></i> View Profile </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/Todo sobre los juegos Panamericanos Santiago 2023_ Ilustración creada con IA.jpeg" class="photo"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Event Directory</b> </h5>
+                        <p class="card-text">Browse upcoming sports events and tournaments. Find the next big game near you!</p>
+                        <a href="tournamentFinder.html" target="_blank" class="btn btn-info"><i class="fas fa-calendar-alt me-2"></i> Explore Events </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/Data and account protection concept flat vector illustration, Password secure access on smartphone, Cyber security for landing page, mobile app, template, web banner, infographics.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <b>Settings</b></h5>
+                         <p class="card-text">Manage your account preferences, update credentials, and personalize your experience.</p>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#settingsModal"><i class="fas fa-sliders-h me-2"></i> Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card" style="width: 19rem; float: left; margin-left: 80px;">
+                    <img src="pics/cheen tapak dam dam.jpeg" class="photo" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"> <b>Logout</b></h5>
+                        <p class="card-text">End your session securely and return to the home screen with a single click after ending your session.</p>
+                        <a href="#" target="_blank" class="btn btn-info" onclick="doLogout();"><i class="fas fa-arrow-right-from-bracket me-2"></i>Logout </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!--Settings Modal -->
+    <div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="settingsModalpLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h1 class="modal-title fs-5 text-center w-100" id="settingsModalLabel">Player Profile Settings</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-modal-image">
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" ng-model="email" placeholder="name@example.com">
+                        <label for="txtEmail2">Email Id</label>
+                    </div>
+
+                    <div class="form-floating mb-3 ">
+                        <input type="password" class="form-control" ng-model="oldPwd" id="txtPwd" name="txtPwd"
+                            placeholder="Password">
+                        <label for="txtPwd">Old Password</label>
+                        <i class="fa-solid fa-eye" id="eye"
+                            style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
+
+                    <div class="form-floating mb-3 ">
+                        <input type="password" class="form-control" ng-model="newPwd" id="txtPwd2" name="txtPwd2"
+                            placeholder="Password">
+                        <label for="txtPwd2">New Password</label>
+                        <i class="fa-solid fa-eye" id="eye1"
+                            style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info text-center w-100" data-bs-dismiss="modal"
+                        ng-click="doChangePwd();">Update
+                        Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
