@@ -122,7 +122,7 @@
                 let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
                 if (email == "") {
                     $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
-                    $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
+                    $("#errMsgE").html("Email can't be empty").addClass("not-ok").removeClass("ok");
 
                     $(this).focus();
                 }
@@ -179,6 +179,51 @@
                     $("#txtPwd2").prop("type", "password");
                     $("#eye1").removeClass("fa-eye-slash").addClass("fa-eye");
                 }
+            })
+
+             $("#txtEmail2").keyup(function () {
+                let email = $(this).val();
+                let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+                if (email == "") {
+                    $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgE").html("Email can't be empty").addClass("not-ok").removeClass("ok");
+
+                    $(this).focus();
+                }
+
+                else if (regex.test(email) == false) {
+                    $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgE").html("Invalid Email Format").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                }
+
+                else {
+                    $("#errPicE").addClass("ok-pic").removeClass("not-ok-pic");
+                    $("#errMsgE").html("Valid EmailId").addClass("ok").removeClass("not-ok");
+                    $(this).focus();
+                }
+
+            })
+
+            $("#txtPwd2").keyup(function () {
+                let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+                let pwd = $(this).val();
+
+                if (pwd == "") {
+                    $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgP").html("Password can't be empty").addClass("not-ok").removeClass("ok");
+
+                    $(this).focus();
+                }
+                else if (regex.test(pwd) == true) {
+                    $("#errPicP").addClass("ok-pic").removeClass("not-ok-pic");
+                    $("#errMsgP").html("Looks Good").addClass("ok").removeClass("not-ok");
+                }
+                else {
+                    $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgP").html("Invalid Password").addClass("not-ok").removeClass("ok");
+                }
+
             })
 
         })
@@ -509,6 +554,10 @@
                             <input type="email" class="form-control" id="txtEmail2" name="txtEmail2"
                                 placeholder="name@example.com">
                             <label for="txtEmail2">Email address</label>
+                            <div style="display: flex;">
+                                <div style="margin-right: 10px;" id="errPicE"></div>
+                                <div id="errMsgE"></div>
+                            </div>
 
                         </div>
 
@@ -519,6 +568,10 @@
                             <label for="txtPwd2">Password</label>
                             <i class="fa-solid fa-eye fa-bounce" id="eye1"
                                 style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                <div style="display: flex;">
+                                <div style="margin-right: 10px;" id="errPicP"></div>
+                                <div id="errMsgP"></div>
+                            </div>
                         </div>
 
 
