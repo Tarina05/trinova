@@ -182,24 +182,24 @@
             })
 
              $("#txtEmail2").keyup(function () {
-                let email = $(this).val();
+                let email1 = $(this).val();
                 let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
-                if (email == "") {
-                    $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
-                    $("#errMsgE").html("Email can't be empty").addClass("not-ok").removeClass("ok");
+                if (email1 == "") {
+                    $("#errPicE2").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgE2").html("Email can't be empty").addClass("not-ok").removeClass("ok");
 
                     $(this).focus();
                 }
 
-                else if (regex.test(email) == false) {
-                    $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
-                    $("#errMsgE").html("Invalid Email Format").addClass("not-ok").removeClass("ok");
+                else if (regex.test(email1) == false) {
+                    $("#errPicE2").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgE2").html("Invalid Email Format").addClass("not-ok").removeClass("ok");
                     $(this).focus();
                 }
 
                 else {
-                    $("#errPicE").addClass("ok-pic").removeClass("not-ok-pic");
-                    $("#errMsgE").html("Valid EmailId").addClass("ok").removeClass("not-ok");
+                    $("#errPicE2").addClass("ok-pic").removeClass("not-ok-pic");
+                    $("#errMsgE2").html("Valid EmailId").addClass("ok").removeClass("not-ok");
                     $(this).focus();
                 }
 
@@ -207,21 +207,21 @@
 
             $("#txtPwd2").keyup(function () {
                 let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-                let pwd = $(this).val();
+                let pwd1 = $(this).val();
 
-                if (pwd == "") {
-                    $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
-                    $("#errMsgP").html("Password can't be empty").addClass("not-ok").removeClass("ok");
+                if (pwd1 == "") {
+                    $("#errPicP2").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgP2").html("Password can't be empty").addClass("not-ok").removeClass("ok");
 
                     $(this).focus();
                 }
-                else if (regex.test(pwd) == true) {
-                    $("#errPicP").addClass("ok-pic").removeClass("not-ok-pic");
-                    $("#errMsgP").html("Looks Good").addClass("ok").removeClass("not-ok");
+                else if (regex.test(pwd1) == true) {
+                    $("#errPicP2").addClass("ok-pic").removeClass("not-ok-pic");
+                    $("#errMsgP2").html("Looks Good").addClass("ok").removeClass("not-ok");
                 }
                 else {
-                    $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
-                    $("#errMsgP").html("Invalid Password").addClass("not-ok").removeClass("ok");
+                    $("#errPicP2").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgP2").html("Invalid Password").addClass("not-ok").removeClass("ok");
                 }
 
             })
@@ -555,8 +555,8 @@
                                 placeholder="name@example.com">
                             <label for="txtEmail2">Email address</label>
                             <div style="display: flex;">
-                                <div style="margin-right: 10px;" id="errPicE"></div>
-                                <div id="errMsgE"></div>
+                                <div style="margin-right: 10px;" id="errPicE2"></div>
+                                <div id="errMsgE2"></div>
                             </div>
 
                         </div>
@@ -569,8 +569,8 @@
                             <i class="fa-solid fa-eye fa-bounce" id="eye1"
                                 style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                                 <div style="display: flex;">
-                                <div style="margin-right: 10px;" id="errPicP"></div>
-                                <div id="errMsgP"></div>
+                                <div style="margin-right: 10px;" id="errPicP2"></div>
+                                <div id="errMsgP2"></div>
                             </div>
                         </div>
 
