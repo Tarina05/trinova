@@ -15,6 +15,17 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI("AIzaSyDbwiKEVYlyTYqw41HN3-aKVIiOeB7wiXk");
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
 
+//for nodemailer
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // for Gmail, use 'gmail'; for others, use appropriate service
+    auth: {
+        user: 'tarinajethi620@gmail.com', // replace with your email
+        pass: 'yueo wyad kglv mgpy' // use App Password if 2FA is on
+    }
+});
+
 app.listen(2004, function () {
     console.log("Server started at port no :2004")
 })
@@ -55,25 +66,70 @@ app.get("/sign-up", function (req, resp) {
 
     mySqlVen.query("insert into users values(?,?,?,current_date(),1)", [emailid, password, utype], function (errKuch) {
         if (errKuch == null)
-            resp.send("Record Saved Successfulllyyy....Badhai");
+            resp.send("Sign-up successful! Please check your inbox for a welcome message.");
         else
             resp.send(errKuch.message);
     })
+
+    let subject = "";
+    let htmlBody = "";
+
+    if (utype === "Player") {
+        subject = "Welcome to Trinova, Player!";
+        htmlBody = `
+                        <div style="font-family:Arial, sans-serif; padding:15px;">
+                            <h2 style="color:#2b6cb0;">Welcome to Trinova, Athlete! 🏃‍♂️</h2>
+                            <p>We're thrilled to have you onboard as a <strong>Player</strong>.</p>
+                            <p>Your journey into competitive sports starts now. Explore tournaments, represent your skills, and much more.</p>
+                            <p>💡 <em>Tip:</em> Head to your dashboard to complete your profile and start exploring tournaments in your city!</p>
+                            <hr>
+                            <p><strong>Your Email:</strong> ${emailid}</p>
+                            <p style="color:#38a169;">Let the games begin!</p>
+                            <p>Team Trinova</p>
+                        </div>
+                    `;
+    } else if (utype === "Organizer") {
+        subject = "Welcome to GameVerse, Organizer!";
+        htmlBody = `
+                        <div style="font-family:Arial, sans-serif; padding:15px;">
+                            <h2 style="color:#d69e2e;">You're Officially an Organizer on Trinova! 🏆</h2>
+                            <p>Hello and welcome to the <strong>Organizer's Hub</strong>!</p>
+                            <p>You can now post your tournaments, manage entries, and connect with thousands of players.</p>
+                            <p>🛠 <em>Organizer Dashboard:</em> Visit your dashboard to set up your first tournament and manage your organization details.</p>
+                            <hr>
+                            <p><strong>Your Email:</strong> ${emailid}</p>
+                            <p style="color:#3182ce;">We're here to help you make every event unforgettable.</p>
+                            <p>Team Trinova</p>
+                        </div>
+                    `;
+    }
+
+    let mailOptions = {
+        from: 'tarinajethi620@gmail.com', // sender address
+        to: emailid, // receiver address (the user who just signed up)
+        subject:  subject,
+        html: htmlBody
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.error("Error sending email: " + error);
+        } else {
+            console.log("Email sent: " + info.response);
+        }
+    });
 })
 
 //----------LOGIN WITH AJAX------------------------
 app.get("/chk-login", function (req, resp) {
     mySqlVen.query("select * from users where emailid=? AND password=?", [req.query.txtEmail2, req.query.txtPwd2], function (err, allRecords) {
-        if(allRecords.length==0)
-        {
+        if (allRecords.length == 0) {
             resp.send("Invalid");
         }
-        else if(allRecords[0].status==1)
-        {
+        else if (allRecords[0].status == 1) {
             resp.send(allRecords[0].utype);
         }
-        else
-        {
+        else {
             resp.send("Blocked");
         }
     })
@@ -264,15 +320,15 @@ app.post("/Upload-data", async function (req, resp) {
     }
 
     let emailid = req.body.txtEmail;
-    let name=req.body.txtName;
-    let dob=req.body.txtDob;
-    let gender=req.body.txtGen;
+    let name = req.body.txtName;
+    let dob = req.body.txtDob;
+    let gender = req.body.txtGen;
     let contact = req.body.txtContact;
     let address = req.body.txtAddress;
     let game = req.body.comboGames;
     let otherinfo = req.body.txtOtherInfo;
 
-    mySqlVen.query("insert into players values(?,?,?,?,?,?,?,?,?,?)", [emailid, acardpicurl, profilepicurl,name,dob,gender, address, contact, game, otherinfo], function (errKuch) {
+    mySqlVen.query("insert into players values(?,?,?,?,?,?,?,?,?,?)", [emailid, acardpicurl, profilepicurl, name, dob, gender, address, contact, game, otherinfo], function (errKuch) {
         if (errKuch == null)
             resp.send("Player's Record Saved Successfulllyyy");
         else
@@ -284,9 +340,8 @@ app.post("/Upload-data", async function (req, resp) {
 })
 
 //--------------------AI PIC READ-------------------------
-async function RajeshBansalKaChirag(imgurl)
-{
-const myprompt = "Read the text on picture and tell all the information in adhaar card and give output STRICTLY in JSON format {adhaar_number:'', name:'', gender:'', dob: ''}. Dont give output as string."   
+async function RajeshBansalKaChirag(imgurl) {
+    const myprompt = "Read the text on picture and tell all the information in adhaar card and give output STRICTLY in JSON format {adhaar_number:'', name:'', gender:'', dob: ''}. Dont give output as string."
     const imageResp = await fetch(imgurl)
         .then((response) => response.arrayBuffer());
 
@@ -300,10 +355,10 @@ const myprompt = "Read the text on picture and tell all the information in adhaa
         myprompt,
     ]);
     console.log(result.response.text())
-            
-            const cleaned = result.response.text().replace(/```json|```/g, '').trim();
-            const jsonData = JSON.parse(cleaned);
-            console.log(jsonData);
+
+    const cleaned = result.response.text().replace(/```json|```/g, '').trim();
+    const jsonData = JSON.parse(cleaned);
+    console.log(jsonData);
 
     return jsonData
 
@@ -323,7 +378,7 @@ app.post("/picreader", async function (req, resp) {
         let jsonData = await RajeshBansalKaChirag(picUrlResult.url);
 
         resp.json(jsonData);
-        
+
     } catch (err) {
         console.error(err);
         resp.status(500).json({ error: err.message });
@@ -377,7 +432,7 @@ app.post("/modify1-data", async function (req, resp) {
     let game = req.body.comboGames;
     let otherinfo = req.body.txtOtherInfo;
 
-    mySqlVen.query("update players set acardpicurl=?,profilepicurl=?,name=?,dob=?,gender=?,address=?,contact=?, game=?,otherinfo=? where emailid=? ", [acardpicurl, profilepicurl,name,dob,gender, address, contact, game, otherinfo, emailid], function (errKuch, result) {
+    mySqlVen.query("update players set acardpicurl=?,profilepicurl=?,name=?,dob=?,gender=?,address=?,contact=?, game=?,otherinfo=? where emailid=? ", [acardpicurl, profilepicurl, name, dob, gender, address, contact, game, otherinfo, emailid], function (errKuch, result) {
         if (errKuch == null) {
             if (result.affectedRows == 1)
                 resp.send(emailid + "Player's Record Updated Successfulllyyyy...");
@@ -410,9 +465,9 @@ app.get("/do-fetch-users-console", function (req, resp) {
 })
 
 //----------BLOCK USER FROM ADMIN DASH----------------
-app.get("/block-user", function(req, resp) {
+app.get("/block-user", function (req, resp) {
     let emailid = req.query.emailidKuch;
-    mySqlVen.query("update users set status=0 where emailid=?", [emailid], function(err, result) {
+    mySqlVen.query("update users set status=0 where emailid=?", [emailid], function (err, result) {
         if (err) {
             console.log(err);
         } else {
@@ -422,9 +477,9 @@ app.get("/block-user", function(req, resp) {
 });
 
 //--------UNBLOCK USER FROM ADMIN DASH-------------------
-app.get("/unblock-user", function(req, resp) {
+app.get("/unblock-user", function (req, resp) {
     let emailid = req.query.emailidKuch;
-    mySqlVen.query("update users set status=1 where emailid=?", [emailid], function(err, result) {
+    mySqlVen.query("update users set status=1 where emailid=?", [emailid], function (err, result) {
         if (err) {
             console.log(err);
         } else {
@@ -434,57 +489,49 @@ app.get("/unblock-user", function(req, resp) {
 });
 
 //-----------Explore events in player dashboard---------------------
-app.get("/do-fetch-all-tournaments",function(req,resp)
-{
-  console.log(req.query)
-        mySqlVen.query("select * from tournaments where city=? and sports=?",[req.query.kuchCity,req.query.kuchGame],function(err,allRecords)
-        {
-          console.log(allRecords)
-                    resp.send(allRecords);
-        })
+app.get("/do-fetch-all-tournaments", function (req, resp) {
+    console.log(req.query)
+    mySqlVen.query("select * from tournaments where city=? and sports=?", [req.query.kuchCity, req.query.kuchGame], function (err, allRecords) {
+        console.log(allRecords)
+        resp.send(allRecords);
+    })
 })
 
 //-----------Cities In Explore events in player dashboard-------------
-app.get("/do-fetch-all-cities",function(req,resp)
-{
-        mySqlVen.query("select distinct city from tournaments",function(err,allRecords)
-        {
-                    resp.send(allRecords);
-        })
+app.get("/do-fetch-all-cities", function (req, resp) {
+    mySqlVen.query("select distinct city from tournaments", function (err, allRecords) {
+        resp.send(allRecords);
+    })
 })
 
 //-----------Sports In Explore events in player dashboard-------------
-app.get("/do-fetch-all-sports",function(req,resp)
-{
-        mySqlVen.query("select distinct sports from tournaments",function(err,allRecords)
-        {
-           
-                    resp.send(allRecords);
-        })
+app.get("/do-fetch-all-sports", function (req, resp) {
+    mySqlVen.query("select distinct sports from tournaments", function (err, allRecords) {
+
+        resp.send(allRecords);
+    })
 })
 
 //--------MANAGE ORGANIZERS RECORD---------------------------
 app.get("/do-fetch-organizer-details", function (req, resp) {
 
-     mySqlVen.query("select * from organizers",function(err,allRecords)
-        {
-                    resp.send(allRecords);
-        })
+    mySqlVen.query("select * from organizers", function (err, allRecords) {
+        resp.send(allRecords);
+    })
 })
 
 //--------MANAGE PLAYERS RECORD---------------------------
 app.get("/do-fetch-player-details", function (req, resp) {
 
-     mySqlVen.query("select * from players",function(err,allRecords)
-        {
-                    resp.send(allRecords);
-        })
+    mySqlVen.query("select * from players", function (err, allRecords) {
+        resp.send(allRecords);
+    })
 })
 
 //---------CHANGE PASSWORD OF PLAYER IN SETTINGS OF PLAYER DASHBOARD------------
 app.get("/do-change-Pwd", function (req, resp) {
     console.log(req.query);
-    
+
     let email = req.query.email;
     let oldPwd = req.query.oldPwd;
     let newPwd = req.query.newPwd;
