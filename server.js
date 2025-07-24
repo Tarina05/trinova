@@ -107,7 +107,7 @@ app.get("/sign-up", function (req, resp) {
     let mailOptions = {
         from: 'tarinajethi620@gmail.com', // sender address
         to: emailid, // receiver address (the user who just signed up)
-        subject:  subject,
+        subject: subject,
         html: htmlBody
     };
 
@@ -251,6 +251,50 @@ app.get("/Publish-data", function (req, resp) {
         else
             resp.send(errKuch.message);
     })
+
+    let mailOptions = {
+        from: 'tarinajethi620@gmail.com', // sender address
+        to: emailid, // receiver address (the user who just signed up)
+        subject: `🎉 Your Tournament "${eventt}" is Live on Trinova!`,
+        html: `
+        <div style="font-family: 'Segoe UI', sans-serif; color: #2c3e50; padding: 25px; background: #f8f9fa; border-radius: 8px;">
+            <h2 style="color: #1e88e5;">✅ Tournament Successfully Registered!</h2>
+            <p>Hey Organizer,</p>
+
+            <p style="font-size: 15px;">
+                Your tournament <strong>"${eventt}"</strong> has officially gone live on <strong>Trinova</strong>. Get ready to make waves in the sports world! Here's a snapshot of your event:
+            </p>
+
+            <div style="background: #ffffff; border-radius: 6px; padding: 15px 20px; margin: 15px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                <p><strong>🏟️ Sport:</strong> ${sports}</p>
+                <p><strong>📅 Date:</strong> ${doe} &nbsp; <strong>🕒 Time:</strong> ${toe}</p>
+                <p><strong>📍 Venue:</strong> ${address}, ${city}</p>
+                <p><strong>👥 Age Group:</strong> ${minage} to ${maxage} years</p>
+                <p><strong>💸 Registration Fee:</strong> ₹${fee}</p>
+                <p><strong>🏆 Prize:</strong> ${prize}</p>
+                <p><strong>🗓️ Register Before:</strong> ${lastdate}</p>
+                <p><strong>📞 Contact:</strong> ${contact}</p>
+            </div>
+
+            <p style="font-size: 14px;">
+                You can view or manage this tournament directly from your dashboard. Let the games begin!
+            </p>
+
+            <p style="margin-top: 25px; font-size: 13px; color: #777;">
+                Thanks for trusting Trinova. We’re excited to see your tournament in action!<br>
+                <em>— Team Trinova</em>
+            </p>
+        </div>
+    `
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.error("Error sending email: " + error);
+        } else {
+            console.log("Email sent: " + info.response);
+        }
+    });
 })
 
 //--------MANAGE TOURNAMENTS---------------------------
