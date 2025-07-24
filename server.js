@@ -247,7 +247,7 @@ app.get("/Publish-data", function (req, resp) {
 
     mySqlVen.query("insert into tournaments values(null,?,?,?,?,?,?,?,?,?,?,?,?,?)", [emailid, eventt, doe, toe, address, city, sports, minage, maxage, lastdate, fee, prize, contact], function (errKuch) {
         if (errKuch == null)
-            resp.send("Tournament Registered Successfulllyyy!!!!!!");
+            resp.send("Tournament Registered Successfulllyyy!!✅ A confirmation has been sent to your email.");
         else
             resp.send(errKuch.message);
     })
