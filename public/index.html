@@ -116,27 +116,32 @@
     <script>
         $(document).ready(function () {
 
+            $("#signUpBtn").prop("disabled", false);
+
             $("#txtEmail").keyup(function () {
                 let email = $(this).val();
                 let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
                 if (email == "") {
                     $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgE").html("Email can't be empty").addClass("not-ok").removeClass("ok");
-
                     $(this).focus();
+                    let isEmailValid = false;
                 }
 
                 else if (regex.test(email) == false) {
                     $("#errPicE").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgE").html("Invalid EmailId").addClass("not-ok").removeClass("ok");
                     $(this).focus();
+                    let isEmailValid = false;
                 }
 
                 else {
                     $("#errPicE").addClass("ok-pic").removeClass("not-ok-pic");
                     $("#errMsgE").html("Valid EmailId").addClass("ok").removeClass("not-ok");
                     $(this).focus();
+                    let isEmailValid = true;
                 }
+                updateSignupButtonState();
 
             })
 
@@ -144,15 +149,27 @@
             $("#txtPwd").keyup(function () {
                 let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
                 let pwd = $(this).val();
-                if (regex.test(pwd) == true) {
+                if (pwd == "") {
+                    $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
+                    $("#errMsgP").html("Password can't be empty").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                    let isPwdValid = false;
+                }
+                else if (regex.test(pwd) == true) {
                     $("#errPicP").addClass("ok-pic").removeClass("not-ok-pic");
                     $("#errMsgP").html("Strong Password").addClass("ok").removeClass("not-ok");
+                    $(this).focus();
+                    let isPwdValid = true;
+
                 }
                 else {
                     $("#errPicP").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgP").html("Password must be strong").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                    let isPwdValid = false;
                 }
-
+                updateSignupButtonState();
+                
             })
 
             $("#eye").click(function () {
@@ -180,7 +197,7 @@
                 }
             })
 
-             $("#txtEmail2").keyup(function () {
+            $("#txtEmail2").keyup(function () {
                 let email1 = $(this).val();
                 let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
                 if (email1 == "") {
@@ -226,9 +243,20 @@
 
             })
 
+            let isEmailValid = false;
+            let isPwdValid = false;
+
+            function updateSignupButtonState() {
+                if (isEmailValid && isPwdValid) {
+                    $("#signUpBtn").prop("disabled", false);
+                } else {
+                    $("#signUpBtn").prop("disabled", true);
+                }
+            }
+
         })
 
-       
+
     </script>
 
     <style>
@@ -351,7 +379,8 @@
 
             <!-- Service 3 -->
             <div class="carousel-item text-center p-4">
-                <img src="pics/Profile People Apply For Job _ Premium Vector.jpeg" class="d-block w-100 carousel-img" alt="Player Profile">
+                <img src="pics/Profile People Apply For Job _ Premium Vector.jpeg" class="d-block w-100 carousel-img"
+                    alt="Player Profile">
                 <br>
                 <h4 class="fw-semibold text-dark">Player Profile & Participation</h4>
                 <p class="text-muted">Build your player profile and view your tournament participation history.</p>
@@ -528,7 +557,7 @@
                         <div class="form-floating mb-3">
                             <select class="form-select" id="comboUser" name="comboUser"
                                 aria-label="Floating label select example">
-                                <option selected>Open this menu</option>
+                                <option selected disabled>Open this menu</option>
                                 <option value="Organizer">Organizer</option>
                                 <option value="Player">Player</option>
                             </select>
@@ -571,7 +600,7 @@
                             <label for="txtPwd2">Password</label>
                             <i class="fa-solid fa-eye" id="eye1"
                                 style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
-                                <div style="display: flex;">
+                            <div style="display: flex;">
                                 <div style="margin-right: 10px;" id="errPicP2"></div>
                                 <div id="errMsgP2"></div>
                             </div>
