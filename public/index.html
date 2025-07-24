@@ -247,7 +247,7 @@
             let isPwdValid = false;
 
             function updateSignupButtonState() {
-                if (isEmailValid && isPwdValid) {
+                if (isEmailValid && isPwdValid==false) {
                     $("#signUpBtn").prop("disabled", false);
                 } else {
                     $("#signUpBtn").prop("disabled", true);
