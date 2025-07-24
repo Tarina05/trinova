@@ -115,6 +115,9 @@
     <!-- validations -->
     <script>
         $(document).ready(function () {
+
+           $("#btnLogin").prop("disabled", true);
+
             $("#txtEmail").keyup(function () {
                 let email = $(this).val();
                 let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
@@ -185,20 +188,22 @@
                 if (email1 == "") {
                     $("#errPicE2").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgE2").html("Email can't be empty").addClass("not-ok").removeClass("ok");
-
                     $(this).focus();
+                     isEmailValid = false;
                 }
 
                 else if (regex.test(email1) == false) {
                     $("#errPicE2").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgE2").html("Invalid Email Format").addClass("not-ok").removeClass("ok");
                     $(this).focus();
+                     isEmailValid = false;
                 }
 
                 else {
                     $("#errPicE2").addClass("ok-pic").removeClass("not-ok-pic");
                     $("#errMsgE2").html("Valid EmailId").addClass("ok").removeClass("not-ok");
                     $(this).focus();
+                     isEmailValid = true;
                 }
 
             })
@@ -210,21 +215,38 @@
                 if (pwd1 == "") {
                     $("#errPicP2").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgP2").html("Password can't be empty").addClass("not-ok").removeClass("ok");
-
                     $(this).focus();
+                     isEmailValid = false;
                 }
                 else if (regex.test(pwd1) == true) {
                     $("#errPicP2").addClass("ok-pic").removeClass("not-ok-pic");
                     $("#errMsgP2").html("Looks Good").addClass("ok").removeClass("not-ok");
+                    $(this).focus();
+                     isEmailValid = false;
+
                 }
                 else {
                     $("#errPicP2").addClass("not-ok-pic").removeClass("ok-pic");
                     $("#errMsgP2").html("Invalid Password").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                     isEmailValid = true;
                 }
 
             })
 
         })
+
+        let isEmailValid = false;
+        let isPwdValid = false;
+
+         function updateLoginButtonState() {
+        if (isEmailValid && isPwdValid) {
+        $("#btnLogin").prop("disabled", false);
+        } else {
+        $("#btnLogin").prop("disabled", true);
+        }
+        }
+
 
     </script>
 
