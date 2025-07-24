@@ -89,7 +89,7 @@ app.get("/sign-up", function (req, resp) {
                         </div>
                     `;
     } else if (utype === "Organizer") {
-        subject = "Welcome to GameVerse, Organizer!";
+        subject = "Welcome to Trinova, Organizer!";
         htmlBody = `
                         <div style="font-family:Arial, sans-serif; padding:15px;">
                             <h2 style="color:#d69e2e;">You're Officially an Organizer on Trinova! 🏆</h2>
